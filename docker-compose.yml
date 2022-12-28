@@ -1,0 +1,9 @@
+version: "3.1"
+
+services:
+  db:
+    image: postgres:alpine
+    env_file: ./ez_voca_app/.env
+    restart: always
+    ports:
+      - "5432:5432"
