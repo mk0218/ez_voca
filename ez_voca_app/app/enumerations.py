@@ -2,13 +2,23 @@ from typing import Optional
 from enum import Enum
 
 
-class EnglishWordClass(Enum):
-    def __init__(self, fullname: str, alias: Optional[str] = None):
-        self.fullname = fullname
+class EnglishWordClass(str, Enum):
+    def __new__(cls, fullname: str, alias: Optional[str] = None):
+        obj = str.__new__(cls, [fullname])
+        obj._value_ = fullname
+        obj.fullname = obj._value_
         if alias:
-            self.alias = alias
+            obj.alias = alias
         else:
-            self.alias = fullname
+            obj.alias = fullname
+        return obj
+
+    @classmethod
+    def includes(cls, str_: str):
+        for ec in cls:
+            if str_ == ec.fullname.lower() or str_ == ec.alias.lower():
+                return True
+        return False
 
 
 class WordClass(EnglishWordClass):
